@@ -5,8 +5,8 @@
         "appIDs": ["4726XA6W4S.club.goodminton.stringly"],
         "components": [
           {
-            "/": "/s/*",
-            "comment": "Session-share deep links open the app; all other paths (marketing, privacy, terms) stay in the browser."
+            "/": "/share/*",
+            "comment": "Share deep links (goodminton.club/share/<id>) open the app; all other paths (marketing, privacy, terms) stay in the browser."
           }
         ]
       }
