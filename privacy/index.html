@@ -29,13 +29,15 @@
 <header>
   <div class="brand">Goodminton</div>
   <h1>Privacy Policy</h1>
-  <div class="updated"><strong>Last updated:</strong> 2026-06-01</div>
+  <div class="updated"><strong>Last updated:</strong> 2026-07-15</div>
 </header>
 
 <p>Goodminton ("we", "the app") is a badminton tracking application built by Goodminton Club. This policy explains what we collect and your rights.</p>
 
 <h2>What we collect</h2>
-<p><strong>On your device only:</strong> rackets, strings, tensions, matches, scouting notes, dates, and logs you enter. This data is stored locally in the app's database (SQLite) and never leaves your device unless you explicitly export or share it.</p>
+<p><strong>On your device (never sent to our servers):</strong> rackets, strings, tensions, matches, scouting notes, dates, logs, XP, and cards you enter. This data is stored locally in the app's database (SQLite) and never leaves your device unless you explicitly export or share it.</p>
+<p><strong>Social account data (stored on our servers, only if you create a social account):</strong> When you sign in with Apple or Google to use social features (friends, play groups, ladders, tournaments, compliments), we store on our backend: your profile (display name, handle, and the email address from your sign-in provider), your friends, the groups/ladders/tournaments you join, match results you report, and compliments you send or receive. This data is linked to your account. You can delete all of it — see "Your rights" below and <a href="https://goodminton.club/delete-account">goodminton.club/delete-account</a>. If you do not create a social account, none of this applies.</p>
+<p><strong>Purchases (only if you buy a membership):</strong> Payment is processed by Apple or Google; we never see your card details. Our subscriptions provider records your subscription/purchase status so we can grant membership features.</p>
 <p><strong>Anonymous usage analytics (sent to PostHog):</strong></p>
 <ul>
   <li>A randomly-generated device ID (not linked to your name, email, or phone number)</li>
@@ -43,7 +45,7 @@
   <li>Anonymous events: app opens, screens viewed, creation counts, feature usage, errors</li>
   <li>Approximate country (derived from IP at request time; we do not store IPs)</li>
 </ul>
-<p>We do <strong>not</strong> collect: your name, email, phone number, location, contacts, photos, or any health/fitness data.</p>
+<p>We do <strong>not</strong> collect: your phone number, precise location, contacts, photos, or any health/fitness data. (If you create a social account, we do receive the email and display name from your Apple/Google sign-in, as described above.)</p>
 
 <h2>What we do not do</h2>
 <ul>
@@ -58,15 +60,17 @@
   <tr><th>Processor</th><th>Purpose</th><th>Data shared</th><th>Default region</th></tr>
   <tr><td><strong>PostHog</strong></td><td>Anonymous product analytics</td><td>Anonymous device ID, app/OS version, anonymous events</td><td>US (<code>us.i.posthog.com</code>)</td></tr>
   <tr><td><strong>Sentry</strong></td><td>Anonymous crash reports</td><td>Stack traces, OS/device info, no PII</td><td>US</td></tr>
-  <tr><td><strong>Apple App Store / TestFlight</strong></td><td>App distribution</td><td>Per Apple's policy</td><td>Apple regional</td></tr>
+  <tr><td><strong>Supabase</strong></td><td>Social account backend (only with a social account)</td><td>Profile, friends, groups, ladders, tournaments, match results</td><td>US</td></tr>
+  <tr><td><strong>RevenueCat</strong></td><td>Subscription status (only if you purchase)</td><td>Purchase/subscription status, store user token</td><td>US</td></tr>
+  <tr><td><strong>Apple App Store / TestFlight</strong></td><td>App distribution + payments</td><td>Per Apple's policy</td><td>Apple regional</td></tr>
   <tr><td><strong>Google Play</strong></td><td>App distribution</td><td>Per Google's policy</td><td>Google regional</td></tr>
 </table>
 <p><strong>EU/UK users:</strong> PostHog and Sentry process data in the United States under Standard Contractual Clauses. If you require EU-region processing, contact kevinliu217@gmail.com before installing.</p>
 
 <h2>Your rights (GDPR / UK GDPR / CCPA)</h2>
 <ul>
-  <li><strong>Access (Art. 15):</strong> Settings → Privacy &amp; Data → "Export my data" produces a JSON of all on-device data instantly. For analytics, email kevinliu217@gmail.com with your anonymous ID (Settings → "My analytics ID"); response within 30 days.</li>
-  <li><strong>Erasure (Art. 17):</strong> on-device data via Settings → "Delete all local data" (instant); analytics deletion via email request, within 30 days.</li>
+  <li><strong>Access (Art. 15):</strong> on-device data via Settings → Privacy &amp; Data → "Export my data" (instant JSON). For your server-side social account data or analytics, email kevinliu217@gmail.com from your account email; response within 30 days.</li>
+  <li><strong>Erasure (Art. 17):</strong> on-device data via Settings → "Delete all local data" (instant). Your entire <strong>social account</strong> (all server-side data) via Settings → "Delete account" in the app, or <a href="https://goodminton.club/delete-account">goodminton.club/delete-account</a>; completed within 30 days. Analytics deletion via email request.</li>
   <li><strong>Portability (Art. 20):</strong> "Export my data" emits a structured JSON snapshot.</li>
   <li><strong>Rectification (Art. 16):</strong> edit any record directly in the app.</li>
   <li><strong>Opt out (Art. 21 / CCPA):</strong> Settings → toggle off "Send anonymous analytics." Effective immediately.</li>
