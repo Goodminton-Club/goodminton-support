@@ -67,7 +67,7 @@
 </ul>
 <h3>Technical and security records</h3>
 <ul>
-  <li><strong>Audit log:</strong> actions that change tournament data (for example registering, entering a score, or changing a draw) are recorded so disputes can be resolved, and so that a tournament day can be replayed for testing. The log records who did what and when; request arguments refer to players by internal reference rather than by name, but the before/after snapshots of a change may contain personal details. The audit log is append-only and is kept indefinitely.</li>
+  <li><strong>Audit log:</strong> actions that change tournament data (for example registering, entering a score, or changing a draw) are recorded so disputes can be resolved, and so that a tournament day can be replayed for testing. The log records who did what and when. Audit records are designed to contain references (internal player and entry identifiers) rather than personal details such as names, contact details or birth year. The audit log is append-only and is kept indefinitely.</li>
   <li><strong>Error reports:</strong> when the app hits an error, it can send a short report (app version, error code, short message, and a page template without personal identifiers). These are kept for 30 days.</li>
   <li><strong>Rate-limit records:</strong> short-lived records (about 2 days) used to stop abuse, such as repeated check-in or membership-check attempts, which may be tied to your account or network address.</li>
   <li><strong>Request records:</strong> to make retries safe, the app briefly stores the responses to your actions (7 days). Our sign-in service (Supabase Auth) also logs sign-in activity, including IP address and browser details.</li>
@@ -109,9 +109,14 @@
 <h2>Retention and deletion</h2>
 <ul>
   <li>We keep your account and tournament history while your account exists, so brackets, results and ratings stay accurate.</li>
-  <li><strong>Deleting your account:</strong> the app is designed to let you delete your account. When you do, your name, contact details, birth year, profile photo and member number are removed or replaced with placeholders ("Deleted Player"), your push subscriptions are deleted, and your sign-in account is deleted. Match results stay attached to the anonymized player so other players' brackets remain intact. Gender, playing level, affiliation, ratings and rating history, check-in records and score-report notes also stay on the anonymized record. Deletion may be blocked while you are the last owner of a tournament that is not finished.</li>
+  <li><strong>Deleting your account:</strong> the app is designed to let you delete your account. When you do:
+    <ul>
+      <li><strong>Cleared or replaced:</strong> your names (replaced with the placeholder "Deleted Player"), email address, phone number, birth year, profile photo, member number and affiliation. Your club memberships are retired, your push subscriptions are removed, and your sign-in account is deleted.</li>
+      <li><strong>Kept, on the anonymized record:</strong> gender, playing level, ratings and rating history, check-in records, score-report notes, and match results, so other players' brackets and results remain intact.</li>
+    </ul>
+    Deletion may be blocked while you are the last owner of a tournament that is not finished.</li>
   <li><strong>To request deletion or a copy of your data</strong> (or if the in-app option is not yet available), email kevinliu217@gmail.com from your account email address. We will respond within 30 days.</li>
-  <li><strong>Retention periods:</strong> error reports 30 days; rate-limit records about 2 days; request records 7 days; encrypted backups up to 30 days; the audit log is kept indefinitely (it refers to players by internal reference in request arguments, and is not deleted when an account is deleted).</li>
+  <li><strong>Retention periods:</strong> error reports 30 days; rate-limit records about 2 days; request records 7 days; encrypted backups up to 30 days; the audit log is kept indefinitely (it is designed to contain internal references rather than personal details, and is not deleted when an account is deleted).</li>
 </ul>
 
 <h2>Children</h2>
@@ -119,6 +124,7 @@
 
 <h2>Changes</h2>
 <p>We will update this page and the "Last updated" date when this policy changes. We will notify you in the app or by email before material changes take effect.</p>
+<p><strong>2026-11-22:</strong> deleting your account now also clears your affiliation (previously it was kept on the anonymized record), and we clarified what is cleared and what is kept on deletion and that audit records are designed to contain references rather than personal details.</p>
 
 <h2>Contact</h2>
 <p>kevinliu217@gmail.com</p>
