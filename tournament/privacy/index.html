@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Goodminton Tournament — Privacy Policy</title>
+<meta name="description" content="Privacy policy for the Goodminton Tournament web app: what we collect, who can see it, and how to delete it.">
 <style>
   :root { --ink:#1a1a2e; --muted:#555; --accent:#6c4ad6; --bg:#fafafe; --line:#e6e6f0; }
   * { box-sizing:border-box; }
@@ -43,16 +44,18 @@
 <h3>Your profile and club information</h3>
 <ul>
   <li>Your name and email address, and optionally a phone number, gender, birth year (used for age-group events), self-reported playing level, affiliation (for example a college or company, for category events), and a profile photo.</li>
-  <li>Your club membership status and roles (for example player, desk staff, or tournament admin). If your club uses a membership roster, the club's organizers may upload a list of member names and member numbers, and your account can be matched against it to confirm you are a member.</li>
+  <li>A parent or guardian can create and manage a profile for a junior, and records consent for the junior to take part.</li>
+  <li>Your club membership status and roles (for example player, desk staff, or tournament admin). If your club uses a membership roster, the club's organizers may upload a list of members (name, member number, membership name, status and expiry date), including people who never use the app. When you claim a membership, we store the name you typed, the member number and the outcome of the check.</li>
   <li>If a tournament organizer at the desk registers you as a guest, they enter your name, birth year, gender and level, and optionally a contact. A guest added this way has no account.</li>
 </ul>
 <h3>Tournament activity</h3>
 <ul>
-  <li>Your registrations and the events you enter, including partner or team information and team-draw numbers.</li>
+  <li>Your registrations and the events you enter, including partner or team information and team-draw numbers, and any "ready now, skip rest" choice you make for your next match.</li>
   <li>Levels and ratings, and how they change after matches.</li>
-  <li>Check-in records and your check-in number.</li>
+  <li>Check-in records (time and method) and your check-in number.</li>
   <li>Match schedules, scores you or your opponent report, confirmations and disputes, and final results.</li>
-  <li>Payment status as recorded by the desk (paid or unpaid, and the method, such as cash, Zelle or Venmo). See "Payments" below.</li>
+  <li>Payment status (paid or unpaid) and, for entries the desk takes payment for, the method (cash, Zelle or Venmo). See "Payments" below.</li>
+  <li>In-app notifications sent to you (type, content and whether you read them).</li>
 </ul>
 <h3>Notifications</h3>
 <ul>
@@ -60,26 +63,29 @@
 </ul>
 <h3>Venue display boards</h3>
 <ul>
-  <li>A venue display board (the TV at the tournament) opens an anonymous session. This session has no name or email, is limited to showing one tournament, and expires.</li>
+  <li>A venue display board (the TV at the tournament) opens an anonymous session. This session has no name or email, is limited to showing one tournament, and expires after 24 hours. Our sign-in service keeps an anonymous account record for it with no personal details.</li>
 </ul>
 <h3>Technical and security records</h3>
 <ul>
-  <li><strong>Audit log:</strong> organizers' and players' actions that change tournament data (for example registering, entering a score, or changing a draw) are recorded so disputes can be resolved. The log records who did what and when, and refers to players by internal reference rather than by name where practical.</li>
+  <li><strong>Audit log:</strong> actions that change tournament data (for example registering, entering a score, or changing a draw) are recorded so disputes can be resolved, and so that a tournament day can be replayed for testing. The log records who did what and when; request arguments refer to players by internal reference rather than by name, but the before/after snapshots of a change may contain personal details. The audit log is append-only and is kept indefinitely.</li>
   <li><strong>Error reports:</strong> when the app hits an error, it can send a short report (app version, error code, short message, and a page template without personal identifiers). These are kept for 30 days.</li>
   <li><strong>Rate-limit records:</strong> short-lived records (about 2 days) used to stop abuse, such as repeated check-in or membership-check attempts, which may be tied to your account or network address.</li>
+  <li><strong>Request records:</strong> to make retries safe, the app briefly stores the responses to your actions (7 days). Our sign-in service (Supabase Auth) also logs sign-in activity, including IP address and browser details.</li>
 </ul>
 <p>We do <strong>not</strong> use analytics or advertising trackers in the app, and we do not use your data to build advertising profiles.</p>
 
 <h2>Who can see your information</h2>
 <ul>
-  <li><strong>Public venue board:</strong> the board shown at the venue is viewable by anyone who has the board's link. It shows first name and last initial, court, event, round, scores, the call queue and recent results. It does not show birth year, gender, contact details, profile photos, membership or ratings. A junior's guardian can choose to have the junior shown by entry number only.</li>
-  <li><strong>Signed-in users:</strong> once an organizer publishes a draw, signed-in users of the app can see that draw's bracket and match results. Your profile details, registration, ratings, check-in and payment status are visible only to you and to the organizers and desk staff of the relevant tournament or club.</li>
-  <li><strong>Organizers:</strong> tournament owners, admins and desk staff can see the registration, contact, check-in and payment information needed to run their event.</li>
-  <li>Profile photos are stored privately and are shown only to signed-in viewers within the same tournament; they never appear on public surfaces.</li>
+  <li><strong>Public venue board:</strong> the board shown at the venue is viewable by anyone who has the board's link. It shows first name and last initial, court, event, round, scores, the call queue (with each player's check-in number) and recent results. It does not show birth year, gender, contact details, profile photos, membership or ratings. You (or a junior's guardian) can choose to be shown by entry number only.</li>
+  <li><strong>Other signed-in users:</strong> any signed-in user of the app can see the entry list of any tournament that is open for registration or later (each entrant's first name and last initial, or entry number, per event), matches that are not part of a draw, team line-ups once locked, and the brackets, groups, schedules and results once a draw is published. Members of a club can also see that club's ladder standings. Other players cannot see your contact details, birth year, gender, profile photo, ratings or payment status.</li>
+  <li><strong>You and your guardian:</strong> you can see your own profile, registrations, ratings, check-ins and payments. A junior's guardian can see the junior's data.</li>
+  <li><strong>Organizers:</strong> a club's owners, admins and desk staff, and a tournament's admins, desk staff and umpires, can see the profile, contact details, birth year, registration, check-in and payment information of the players in their club or tournament, as needed to run the event.</li>
+  <li><strong>Platform administrators:</strong> Goodminton's platform administrators, who operate the service, can access all data for support, security and operations.</li>
+  <li><strong>Profile photos</strong> are stored privately. They are visible only to you, a junior's guardian, and the organizers, desk staff and umpires of tournaments you enter or clubs you belong to. They never appear on the public board and are not shown to other players.</li>
 </ul>
 
 <h2>Payments</h2>
-<p>The app does not process card or online payments. Entry fees for a tournament are handled by the club at the desk (for example cash, Zelle or Venmo), and the desk records whether an entry is paid. The app stores that status and method only.</p>
+<p>The app does not process card or online payments. Entry fees are handled by the club outside the app (for example at the desk by cash, Zelle or Venmo). The app stores only whether an entry is paid and, for desk-paid entries, the method.</p>
 
 <h2>What we do not do</h2>
 <ul>
@@ -91,34 +97,34 @@
 <h2>Service providers and hosting</h2>
 <table>
   <tr><th>Provider</th><th>Purpose</th><th>Data involved</th></tr>
-  <tr><td><strong>Supabase</strong></td><td>Database, sign-in, and backend functions. Hosted in the US (AWS us-east-1 region).</td><td>All account and tournament data described above</td></tr>
+  <tr><td><strong>Supabase</strong></td><td>Database, sign-in, and backend functions. Data stored in the US (AWS us-east-1 region).</td><td>All account and tournament data described above</td></tr>
   <tr><td><strong>Cloudflare Pages</strong></td><td>Serves the web app</td><td>Standard web request data (such as IP address) as part of delivering the site</td></tr>
   <tr><td><strong>Google</strong></td><td>"Sign in with Google"</td><td>Your Google account basic profile, if you choose Google sign-in</td></tr>
-  <tr><td><strong>Email delivery provider</strong></td><td>Sends sign-in link emails</td><td>Your email address and the sign-in email</td></tr>
+  <tr><td><strong>Brevo</strong> (email delivery)</td><td>Sends sign-in link emails</td><td>Your email address and the sign-in email</td></tr>
   <tr><td><strong>Browser push services</strong> (such as Apple and Google)</td><td>Delivers optional push notifications</td><td>Your browser's push subscription</td></tr>
   <tr><td><strong>GitHub Actions</strong></td><td>Runs automated backups and keep-alive jobs</td><td>Nightly database backups, encrypted before they are stored</td></tr>
 </table>
-<p>These providers process data on our behalf under their own terms. Your data is processed in the United States.</p>
+<p>These providers process data on our behalf under their own terms. Your data is stored in the United States. Some processing, such as web delivery and push notifications, may happen at other locations.</p>
 
 <h2>Retention and deletion</h2>
 <ul>
   <li>We keep your account and tournament history while your account exists, so brackets, results and ratings stay accurate.</li>
-  <li><strong>Deleting your account:</strong> the app is designed to let you delete your account. When you do, your name, contact details, birth year, profile photo and member number are removed or replaced with placeholders ("Deleted Player"), your push subscriptions are deleted, and your sign-in account is deleted. Match results stay attached to the anonymized player so other players' brackets remain intact. Deletion may be blocked while you are the last owner of a tournament that is not finished.</li>
-  <li><strong>To request deletion or a copy of your data</strong> (or if the in-app option is not yet available), email kevinliu217@gmail.com from your account email address. We aim to respond within 30 days.</li>
-  <li>Short-lived technical records are removed automatically: error reports after 30 days and rate-limit records after about 2 days. The audit log is kept as an append-only record and refers to players by internal reference. Encrypted backups may contain older copies of data until they are rotated out.</li>
+  <li><strong>Deleting your account:</strong> the app is designed to let you delete your account. When you do, your name, contact details, birth year, profile photo and member number are removed or replaced with placeholders ("Deleted Player"), your push subscriptions are deleted, and your sign-in account is deleted. Match results stay attached to the anonymized player so other players' brackets remain intact. Gender, playing level, affiliation, ratings and rating history, check-in records and score-report notes also stay on the anonymized record. Deletion may be blocked while you are the last owner of a tournament that is not finished.</li>
+  <li><strong>To request deletion or a copy of your data</strong> (or if the in-app option is not yet available), email kevinliu217@gmail.com from your account email address. We will respond within 30 days.</li>
+  <li><strong>Retention periods:</strong> error reports 30 days; rate-limit records about 2 days; request records 7 days; encrypted backups up to 30 days; the audit log is kept indefinitely (it refers to players by internal reference in request arguments, and is not deleted when an account is deleted).</li>
 </ul>
 
 <h2>Children</h2>
-<p>Goodminton Tournament is not directed at children under 13, and we do not knowingly collect data from children under 13 without a parent or guardian. Juniors (under 18) can take part in club tournaments through a parent or guardian: a guardian can manage a junior's profile and gives consent before the junior is accepted into an event. Juniors' profile photos, birth years and genders are never shown on public surfaces. If you believe a child has given us personal data without a guardian's consent, contact us and we will delete it.</p>
+<p>Goodminton Tournament is not directed at children under 13, and we do not knowingly collect data from children under 13 without a parent or guardian. Juniors (under 18) can take part in club tournaments through a parent or guardian: a guardian can create and manage a junior's profile and gives consent for the junior to take part. Juniors' profile photos, birth years and genders are never shown on public surfaces. If a child under 13 has registered an account themselves, we will delete their data once we learn of it. If you believe this has happened, contact us.</p>
 
 <h2>Changes</h2>
-<p>We will update this page and the "Last updated" date when this policy changes. If a change is material, we will tell signed-in users in the app.</p>
+<p>We will update this page and the "Last updated" date when this policy changes. We will notify you in the app or by email before material changes take effect.</p>
 
 <h2>Contact</h2>
 <p>kevinliu217@gmail.com</p>
 
 <footer>
-  <nav><a href="/tournament/">Tournament</a><a href="/tournament/privacy/">Tournament Privacy</a><a href="/terms/">Terms</a><a href="/support/">Support</a></nav>
+  <nav><a href="/tournament/">Tournament</a><a href="/tournament/privacy/">Tournament Privacy</a><a href="/support/">Support</a></nav>
   © 2026 Goodminton Club · goodminton.club
 </footer>
 </div></body></html>
