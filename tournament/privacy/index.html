@@ -39,7 +39,7 @@
 <h3>Sign-in</h3>
 <ul>
   <li><strong>Sign in with Google:</strong> we ask Google only for the standard <code>openid</code>, <code>email</code> and <code>profile</code> scopes. Google returns your email address, name and profile picture. We use them to create and identify your account. We do not request access to your Gmail, Drive, Calendar, contacts or any other Google data.</li>
-  <li><strong>Sign in with an email link:</strong> you give us your email address and we send a one-time sign-in link.</li>
+  <li><strong>Sign in with an email code:</strong> you give us your email address and we email you a 6-digit one-time code. The code works once and expires after 15 minutes.</li>
 </ul>
 <h3>Your profile and club information</h3>
 <ul>
@@ -59,7 +59,7 @@
 </ul>
 <h3>Invitations</h3>
 <ul>
-  <li>When a captain invites a partner or teammate, the captain enters the invitee's email address. The invitation link only works for an account signed in with that verified email address (or for that person's guardian). The invitee's email address is visible only to the captain and to the tournament's organizers and desk staff. It is never shown to anyone else and is not written to logs. It is deleted at most one day after the invitation ends, that is, when it is accepted, cancelled or declined, or expires after 7 days.</li>
+  <li>When a captain invites a partner or teammate, the captain enters the invitee's email address. The invitation link only works for the account signed in with that verified email address. A guardian who receives the invitation at their own email address can accept it for a junior they manage. The invitee's email address is visible only to the captain who created the invitation, to the tournament's organizers, desk staff and umpires (and the host club's organizers, desk staff and umpires), and to platform administrators. It is never shown to anyone else and is not written to logs. It is deleted as soon as the invitation is accepted, declined or cancelled. Otherwise it is deleted after the invitation expires (7 days), or at most about 8 days after the invitation was created.</li>
 </ul>
 <h3>Notifications</h3>
 <ul>
@@ -71,7 +71,7 @@
 </ul>
 <h3>Technical and security records</h3>
 <ul>
-  <li><strong>Audit log:</strong> actions that change tournament data (for example registering, entering a score, or changing a draw) are recorded so disputes can be resolved, and so that a tournament day can be replayed for testing. The log records who did what and when. Audit records are designed to contain references (internal player and entry identifiers) rather than personal details such as names, contact details or birth year. The audit log is append-only and is kept indefinitely.</li>
+  <li><strong>Audit log:</strong> actions that change tournament data (for example registering, entering a score, or changing a draw) are recorded so disputes can be resolved, and so that a tournament day can be replayed for testing. The log records who did what and when. Audit records mostly use internal references (player and entry identifiers) instead of names, contact details or birth year, but some records can include personal data: the member number when a membership card is unbound, a short reason typed by staff (for example when a membership is unbound or merged, or a tier, waitlist, pairing or team-number override is made), or a withdrawal reason such as injury. The audit log is append-only, is kept permanently, and is not cleared when an account is deleted.</li>
   <li><strong>Error reports:</strong> when the app hits an error, it can send a short report (app version, error code, short message, and a page template without personal identifiers). These are kept for 30 days.</li>
   <li><strong>Rate-limit records:</strong> short-lived records (about 2 days) used to stop abuse, such as repeated check-in or membership-check attempts, which may be tied to your account or network address.</li>
   <li><strong>Request records:</strong> to make retries safe, the app briefly stores the responses to your actions (7 days). Our sign-in service (Supabase Auth) also logs sign-in activity, including IP address and browser details.</li>
@@ -104,9 +104,9 @@
   <tr><td><strong>Supabase</strong></td><td>Database, sign-in, and backend functions. Data stored in the US (AWS us-east-1 region).</td><td>All account and tournament data described above</td></tr>
   <tr><td><strong>Cloudflare Pages</strong></td><td>Serves the web app</td><td>Standard web request data (such as IP address) as part of delivering the site</td></tr>
   <tr><td><strong>Google</strong></td><td>"Sign in with Google"</td><td>Your Google account basic profile, if you choose Google sign-in</td></tr>
-  <tr><td><strong>Brevo</strong> (email delivery)</td><td>Sends sign-in link emails</td><td>Your email address and the sign-in email</td></tr>
+  <tr><td><strong>Brevo</strong> (email delivery)</td><td>Sends sign-in code emails</td><td>Your email address and the sign-in email</td></tr>
   <tr><td><strong>Browser push services</strong> (such as Apple and Google)</td><td>Delivers optional push notifications</td><td>Your browser's push subscription</td></tr>
-  <tr><td><strong>GitHub Actions</strong></td><td>Runs automated backups and keep-alive jobs</td><td>Daily database backups (database records only, not profile photo files), encrypted before they are stored</td></tr>
+  <tr><td><strong>GitHub Actions</strong></td><td>Runs backup and keep-alive jobs</td><td>Encrypted database backups (database records only, not profile photo files). Before launch we will enable daily automated backups; they are not yet running while the app is in testing</td></tr>
 </table>
 <p>These providers process data on our behalf under their own terms. Your data is stored in the United States. Some processing, such as web delivery and push notifications, may happen at other locations.</p>
 
@@ -115,12 +115,13 @@
   <li>We keep your account and tournament history while your account exists, so brackets, results and ratings stay accurate.</li>
   <li><strong>Deleting your account:</strong> the app is designed to let you delete your account. When you do:
     <ul>
-      <li><strong>Cleared or replaced:</strong> your names (replaced with the placeholder "Deleted Player"), email address, phone number, birth year, profile photo, member number and affiliation. The profile photo file itself is removed from storage, and staff review notes about you are cleared. Your club memberships are retired, your push subscriptions are removed, and your sign-in account is deleted.</li>
+      <li><strong>Cleared or replaced:</strong> your names (replaced with the placeholder "Deleted Player"), email address, phone number, birth year, profile photo, member number and affiliation. Your profile photo becomes unreachable immediately, and the photo file itself is removed from storage by a daily cleanup job, within about two days. Staff review notes about you are cleared. Your club memberships are retired, your push subscriptions are removed, and your sign-in account is deleted. If you are the only guardian of a junior, deleting your account also anonymises that junior's profile in the same way.</li>
       <li><strong>Kept, on the anonymized record:</strong> gender, playing level, ratings and rating history, check-in records, score-report notes, and match results, so other players' brackets and results remain intact. Team names are also kept, because they are shared with your partners or teammates.</li>
+      <li><strong>Not changed by deletion:</strong> the club's own roster entry for you (name and member number), which the club manages. It is removed 30 days after a newer roster import replaces it. The audit log (see "Technical and security records") is also not cleared.</li>
     </ul>
     If you are the last owner of a club, you must transfer ownership before deleting your account.</li>
   <li><strong>To request deletion or a copy of your data</strong> (or if the in-app option is not yet available), email kevinliu217@gmail.com from your account email address. We will respond within 30 days.</li>
-  <li><strong>Retention periods:</strong> rows of a superseded club roster import are deleted 30 days after a newer import replaces them (only the current roster is kept); error reports 30 days; rate-limit records about 2 days; request records 7 days; encrypted database backups up to 30 days, so deleted database records can remain in backups for at most 30 days (profile photo image files are not backed up, only database records, so a lost photo would need to be uploaded again); the audit log is kept indefinitely (it is designed to contain internal references rather than personal details, and is not deleted when an account is deleted).</li>
+  <li><strong>Retention periods:</strong> rows of a superseded club roster import are deleted 30 days after a newer import replaces them (after that, only the current roster is kept, plus a summary of each import: row counts, a file fingerprint and column headings); error reports 30 days; rate-limit records about 2 days; request records 7 days; invitation email addresses until the invitation ends, and at most about 8 days after it was created; once we enable daily automated backups (planned before launch), encrypted database backups will be kept for 30 days, so deleted database records can remain in backups for at most 30 days (profile photo image files are not backed up, only database records, so a lost photo would need to be uploaded again); the audit log is kept permanently and is not deleted when an account is deleted (it mostly holds internal references, but some records can include a member number, a reason typed by staff, or a withdrawal reason such as injury).</li>
 </ul>
 
 <h2>Children</h2>
@@ -128,7 +129,7 @@
 
 <h2>Changes</h2>
 <p>We will update this page and the "Last updated" date when this policy changes. We will notify you in the app or by email before material changes take effect.</p>
-<p><strong>2026-11-22:</strong> superseded club roster imports are now deleted 30 days after being replaced; we added an "Invitations" section describing how invitee email addresses are used and deleted; deleting your account now also clears your affiliation (previously it was kept on the anonymized record), staff review notes are cleared and the profile photo file is removed, team names are kept, the last-owner rule now refers to clubs, database backups are kept for at most 30 days and profile photo files are not backed up, and we clarified what is cleared and what is kept on deletion and that audit records are designed to contain references rather than personal details.</p>
+<p><strong>2026-11-22:</strong> superseded club roster imports are now deleted 30 days after being replaced; we added an "Invitations" section describing how invitee email addresses are used and deleted; deleting your account now also clears your affiliation (previously it was kept on the anonymized record), staff review notes are cleared and the profile photo file is removed, team names are kept, the last-owner rule now refers to clubs, database backups (once enabled before launch) will be kept for at most 30 days and profile photo files are not backed up, and we clarified what is cleared and what is kept on deletion, including that deleting a guardian's account also anonymises juniors they alone manage, that the club's own roster entry is not changed, and that the audit log is permanent and can contain some personal data. Email sign-in uses a 6-digit code, not a link.</p>
 
 <h2>Contact</h2>
 <p>kevinliu217@gmail.com</p>
