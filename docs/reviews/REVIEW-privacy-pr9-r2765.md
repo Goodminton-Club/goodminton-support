@@ -1,6 +1,6 @@
 # Independent review: PR #9, Goodminton Tournament privacy page (R2765)
 
-Reviewed-SHA: 832ae95ceac6d3d32aecc0706c09f1ca91b56b76
+Reviewed-SHA: 845fcd4fe7e8d6df4bd7a2133267553909b9deed
 Verdict: REJECT
 
 - PR: Goodminton-Club/goodminton-support#9 (`docs/privacy-affiliation-r2687`), file `tournament/privacy/index.html`.
@@ -80,3 +80,63 @@ Verdict: REJECT
 
 ## To reach APPROVE
 Fix B1–B4 (all text-only, unless you choose the code route for B2), then ask for a re-review bound to the new head.
+
+---
+
+# Round 2 (R2800)
+
+- Bound to PR head **845fcd4fe7e8d6df4bd7a2133267553909b9deed** (one builder commit on top of 1b94df3: `845fcd4`, R2799).
+- Checked against goodminton-tournament `main` **c4601c00b73ea8f7c0787d7c0a41ad7ea946dd7a**. It was still the tip at review time, and nothing under `supabase/`, `.github/` or `tools/ops/` had changed since round 1.
+- Scope: `git diff 1b94df3 845fcd4` touches only `tournament/privacy/index.html` (9 lines added, 8 removed). I checked every changed sentence against the code.
+- **Round 2 verdict: REJECT.** Two new claims are inaccurate. Both are one-phrase fixes.
+
+## Round 1 blockers: status
+- **B1 invitations: fixed.**
+  - The link works only for the account whose primary confirmed email matches (`private.require_invite_email`). A guardian who receives the invitation at their own email can accept it for a ward. Both are correct.
+  - The visibility list now matches `entry_invites_select`: the creator (`invited_by`), plus `is_staff` = tournament_staff admin/desk/umpire or host-club club_staff owner/admin/desk/umpire. `club_staff_role_chk` does include `umpire`. Platform administrators have operator access.
+  - "Deleted as soon as accepted, declined or cancelled" is correct: each of those RPCs sets `invitee_email = null`.
+  - "Otherwise deleted after the 7-day expiry, at most about 8 days after creation" is correct: `purge_expired` runs daily at 04:17 UTC, and `create_entry_invite_v2` sets `+ interval '7 days'`.
+- **B2 audit log: fixed.**
+  - The caveat is restored in all three places.
+  - I re-checked the latest body of every `write_audit` call. Names, birth year, gender, email, phone, affiliation, typed claim names, notes and team names are redacted by `audit_args`.
+  - The exceptions the page now names are exactly the ones in the code: the unredacted `member_ref` in `unbind_membership` `before`; free-text `reason` in unbind, merge, tier override, waitlist override, pairing and team-number override; and `withdraw_reason` (`injury`).
+  - The new R7 setup audits contain only venue and tournament data. Venue addresses are reduced to `has_address`.
+- **B3 sign-in: fixed.** "6-digit one-time code, works once, expires after 15 minutes" matches `supabase/templates/magic_link.html`, `confirmation.html`, `otp_expiry = 900` and D41. The Brevo row now reads "sign-in code emails".
+- **B4 backups: fixed.**
+  - The provider row, the Retention line and the Changes note now say backups are planned before launch and not running yet. That matches `backup.yml`, whose `schedule:` block is still commented out.
+  - "Kept for 30 days" matches `retention-days: 30`. "Database records only" matches the `pg_dump` in `tools/ops/backup.sh`.
+  - "Runs backup and keep-alive jobs" describes the provider's role. The same cell says backups are not running yet, so it is acceptable.
+
+## Round 1 follow-ups: status
+- **Roster wording: correct.** "A summary of each import: row counts, a file fingerprint and column headings" matches `roster_imports` (`row_count`, `file_sha256`, and a header map holding headers and field names, never values). `uploaded_by` is a reference.
+- **"Not changed by deletion" bullet: correct.** `my_delete_account` does not touch `member_roster`, and `purge_expired` deletes superseded rows after 30 days. The audit log is not cleared.
+- **Invitations about 8 days: correct** (see B1).
+- **Photo removed within about two days: correct for the file.** The sweeper picks objects older than 24 h (by upload time) that no player references. It runs daily at 04:47 UTC and removes up to 200 per run, so the worst case is about 48 h. The sentence before it is wrong; see R2-B1.
+- **Guardian deletion and wards: inaccurate as worded.** See R2-B2.
+
+## Round 2 blockers
+
+### R2-B1. "Your profile photo becomes unreachable immediately" is not true
+- After deletion, `avatar_path` is null and the `avatars_select` policy (`avatar_object_current`) refuses **new** signed URLs at once.
+- But the app reads photos through **signed URLs valid for one hour**: `libs/data/src/avatars.ts`, `SIGNED_URL_SECONDS = 3600`, `createSignedUrl`. A signed URL is not re-checked against RLS. Any URL already issued, for example to an organizer's open desk page, keeps serving the photo until it expires (up to 1 h) or the sweeper deletes the file, whichever comes first.
+- Fix (suggested wording): "After deletion no one can get a new link to your profile photo; any link already shown expires within an hour, and the photo file itself is removed from storage by a daily cleanup job within about two days." Or shorten `SIGNED_URL_SECONDS` in the code and state that number instead.
+
+### R2-B2. "If you are the only guardian of a junior, deleting your account also anonymises that junior's profile" is too broad
+- The `orphan_ward` branch of `my_delete_account` (`202612021050_D45_delete_whole_person.sql`) anonymises a ward only when `w.auth_user is null`, meaning the junior has **no sign-in of their own**, and no other guardian remains.
+- A ward can gain a login. For example, `platform_merge_players` moves the login onto the surviving player when only the merged-away player had one. That happens when a teen's own sign-up profile is merged into the guardian-made profile, and the guardian links move with it. The guardian's deletion then does **not** anonymise that junior, and it should not.
+- Fix (suggested wording): "If you are the only guardian of a junior profile that has no sign-in of its own, deleting your account also anonymises that profile in the same way." Make the same change to the Changes note ("juniors they alone manage" becomes "...that have no sign-in of their own").
+
+## Nits (not blocking)
+- Spelling: "anonymises" in two new sentences, while the rest of the page uses US spelling ("anonymized"). Pick one.
+- "The captain who created the invitation": for a junior captain, the creator (`invited_by`) is the guardian acting for them. That is covered by the page's general guardian language, but "the captain (or their guardian) who created the invitation" would be exact.
+- Supabase Auth sign-in logs (IP, browser) are not removed by account deletion, and the page states no retention period for them. This was already the case before this PR. Consider adding it to "Not changed by deletion" in a later revision.
+
+## Checks
+- **No other changes since 1b94df3.** Only `tournament/privacy/index.html` changed. The review file and every other page are untouched.
+- **HTML:** a static parse found balanced tags and no `li` nested in an `li`. The new nested `<li>` sits inside the existing inner `<ul>`.
+- **Links:** `/tournament/`, `/privacy/`, `/support/` and `/tournament/privacy/` all map to files in the repo.
+- **Rendering:** headless Chrome at 1200 px shows the new bullets and the provider-table cell laid out correctly.
+- **PII and internal names:** the added lines contain no email address, no internal names, no run or decision IDs and no function or table names. The contact address is the existing site contact.
+
+## To reach APPROVE
+Fix R2-B1 and R2-B2 (text only), then ask for a round-3 re-review bound to the new head. Kevin's conditional merge approval does **not** apply to this head, because round 2 is not APPROVE.
