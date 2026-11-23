@@ -1,7 +1,7 @@
 # Independent review: PR #9, Goodminton Tournament privacy page (R2765)
 
-Reviewed-SHA: 845fcd4fe7e8d6df4bd7a2133267553909b9deed
-Verdict: REJECT
+Reviewed-SHA: 0f2f3db4bc0d519b4eca9cb8c24155e5f58310c2
+Verdict: APPROVE
 
 - PR: Goodminton-Club/goodminton-support#9 (`docs/privacy-affiliation-r2687`), file `tournament/privacy/index.html`.
 - Checked against goodminton-tournament `main` at **c4601c00b73ea8f7c0787d7c0a41ad7ea946dd7a**. That includes #62 (D45: one person, one deletion). I first read `main` at 136f2b1, before #62 merged. The merged-logins finding from that pass is now resolved; see "Resolved during review".
@@ -140,3 +140,38 @@ Fix B1–B4 (all text-only, unless you choose the code route for B2), then ask f
 
 ## To reach APPROVE
 Fix R2-B1 and R2-B2 (text only), then ask for a round-3 re-review bound to the new head. Kevin's conditional merge approval does **not** apply to this head, because round 2 is not APPROVE.
+
+---
+
+# Round 3 (R2805)
+
+- Bound to PR head **0f2f3db4bc0d519b4eca9cb8c24155e5f58310c2**. Two builder commits sit on top of 5beb522: `ee9ffbc` (photo-link and guardian wording) and `0f2f3db` (spelling).
+- Checked against goodminton-tournament `main` **c4601c00b73ea8f7c0787d7c0a41ad7ea946dd7a**, still the tip. `supabase/`, `libs/data/src/avatars.ts`, `.github/` and `tools/ops/` are unchanged since round 2.
+- Scope: `git diff 5beb522 0f2f3db` touches only `tournament/privacy/index.html`, 3 lines changed. The review file and the other pages are untouched.
+- **Round 3 verdict: APPROVE.** There are no blockers.
+
+## Round 2 blockers: status
+- **R2-B1 photo link: fixed.** The page now says: "No one can get a new link to your profile photo, any photo link already shown expires within an hour, and the photo file itself is removed from storage by a daily cleanup job within about two days." Each part matches the code:
+  - **No new link:** after `my_delete_account`, `avatar_path` is null. The `avatars_select` policy (`avatar_object_current` plus `can_view_avatar`) refuses `createSignedUrl` to every app user. Platform operator access is disclosed elsewhere on the page.
+  - **Existing links expire within an hour:** the app's only photo link is `createSignedUrl(path, SIGNED_URL_SECONDS)` with `SIGNED_URL_SECONDS = 3600` (`libs/data/src/avatars.ts`). No other `createSignedUrl` or `getPublicUrl` call exists in `apps/` or `libs/`.
+  - **File removed within about two days:** the `avatar_sweep_candidates` grace period is 24 h from upload, and `gt_sweep_avatars` runs daily at 04:47 UTC. The worst case is about 48 h.
+- **R2-B2 guardian deletion: fixed.** "If you are the only guardian of a junior whose profile has no sign-in of its own" now matches the `orphan_ward` branch (`w.auth_user is null`, `w.anonymized_at is null`, no guardian left outside the deleting person's logins). The Changes note was updated to match.
+
+## Round 2 nits: status
+- **Spelling: fixed.** Every occurrence on the page is now "anonymized" or "anonymizes" (lines 118, 119, 132).
+- **Invitation creator: fixed.** "The captain (or their guardian) who created the invitation" matches `invited_by` and `is_entry_captain` (`my_player_ids` includes wards).
+- **Supabase Auth sign-in-log retention: still not stated.** This was already the case before the PR, and it is not a false claim. Optional for a later revision.
+
+## Checks
+- **HTML:** a static parse found balanced tags, no `li` nested in an `li`, and no leftover unclosed elements.
+- **Links:** `/tournament/`, `/privacy/`, `/support/` and `/tournament/privacy/` all map to files in the repo.
+- **PII and internal names:** the added lines contain no email address, no internal names, no run or decision IDs and no function names.
+- **Rendering:** round 2 rendered correctly in headless Chrome, and the round 3 text edits are inside existing elements.
+
+## Not part of this PR (operational go-live gates, for the record)
+- The page states retention that is enforced only after runbook R5 has been applied on the hosted projects: pg_cron jobs, avatar-sweeper deploy and Vault secrets. `docs/DEPLOYED.md` still shows all of these as "merged — not applied".
+- The page also commits to enabling daily backups before launch: the `backup.yml` schedule is still commented out.
+- The page words both as testing-phase or "before launch", so they do not block this merge. They do block go-live.
+
+## Merge
+Under Kevin's conditional approval this head is eligible to merge (round 3 APPROVE, no blockers). The reviewer does not merge.
